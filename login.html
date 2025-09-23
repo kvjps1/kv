@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Member Login</title>
+<title>Teachers Login Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -124,7 +124,7 @@ button:hover{
 <body>
 
 <div class="login-box">
-  <h2>Member Login</h2>
+  <h2>Teacher Login</h2>
   <form onsubmit="event.preventDefault(); login();">
     <div class="field">
       <label for="username">Phone Number</label>
@@ -147,19 +147,9 @@ button:hover{
 
 <script>
 const users = [
-  { username: "9818523773", password: "69125", name: "Dhruv" },
-  { username: "9461738616", password: "10382", name: "Harshit Panwar" },
   { username: "8368992775", password: "93517", name: "Shahil Shivam" },
-  { username: "9654579176", password: "37591", name: "Nirvan Sharma" },
-  { username: "8521883562", password: "81320", name: "Vivek Kumar" }, 
-  { username: "8882583977", password: "33864", name: "Piyush Kumar Sah" }, 
-  { username: "7678629433", password: "11847", name: "Shivkant" }, 
-  { username: "9953539648", password: "29101", name: "Naitik Shekhar Mahajan" }, 
-  { username: "8826584503", password: "62389", name: "Prabhesh Swesh" }, 
-  { username: "9971890335", password: "19291", name: "Kushant Kumar" },
-  { username: "", password: "85347", name: "Kanishka" }
+  { username: "1234567890", password: "37591", name: "Arvind Kumar" }
 ];
-const ADMIN_USERS = ["Dhruv","Harshit Panwar","Shahil Shivam"];
 
 function showNotification(msg){
   const n = document.getElementById("notification");
