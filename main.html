@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NGO Member Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== Global ===== */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Inter',sans-serif;
+  display:flex;
+  min-height:100vh;
+  background:#0c0e16;
+  color:#e4e4e4;
+  overflow-x:hidden;
+  animation: pageFade 1s ease forwards;
+}
+body,a,img{user-select:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-drag:none;}
+
+/* ===== Sidebar ===== */
+#sidebar{
+  width:220px;
+  background:#0f121b;
+  border-right:1px solid rgba(255,255,255,0.07);
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+#sidebar.hide{ transform: translateX(-240px); opacity:0.9; }
+#sidebar h2{ color:#00e0ff; font-size:1.6rem; margin-bottom:30px; transition: transform .4s, text-shadow .4s; }
+#sidebar h2:hover{ transform: scale(1.08) rotate(-2deg); text-shadow:0 0 15px #00e0ff; }
+#sidebar .tab-link{ display:block; padding:12px 10px; margin-bottom:5px; font-weight:500; border-left:3px solid transparent; transition:0.3s; }
+#sidebar .tab-link:hover,#sidebar .tab-link.active{ border-left:3px solid #00e0ff; padding-left:14px; color:#00e0ff; }
+#sidebar .logout-btn{ margin-top:10px; background:#00e0ff; border:none; color:#000; padding:10px; border-radius:6px; font-weight:600; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
+#sidebar .logout-btn:hover{ transform: scale(1.05) rotate(1deg); box-shadow:0 0 18px #00e0ff; }
+
+/* ===== Sidebar toggle ===== */
+#toggle-btn{ display:none; position:fixed; top:15px; left:15px; z-index:1000; background:#00e0ff; border:none; color:#000; padding:10px 12px; border-radius:6px; cursor:pointer; }
+
+/* ===== Main Area ===== */
+.main{ flex:1; padding:40px; overflow-y:auto; animation: fadeUp 1s ease forwards; }
+.main h1{ color:#00e0ff; margin-bottom:10px; opacity:0; transform:translateY(-20px); animation: fadeDown 0.8s 0.2s forwards; }
+.main h1:hover{ text-shadow:0 0 15px #00e0ff,0 0 25px #00e0ff; }
+#sub-text{ color:#aaa; margin-bottom:20px; opacity:0; transform:translateY(-20px); animation: fadeDown 0.8s 0.4s forwards; }
+
+/* ===== Cards ===== */
+.cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
+.card{
+  background:#161b26;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.25);
+  transform: translateY(30px) scale(0.95);
+  opacity:0;
+  animation: cardFloat 0.8s forwards;
+  transition: transform 0.4s, box-shadow 0.4s;
+  perspective:1000px;
+}
+.card:hover{ transform: translateY(-10px) scale(1.05) rotateX(5deg) rotateY(5deg); box-shadow:0 0 35px rgba(0,224,255,0.35),0 8px 25px rgba(0,0,0,0.5);}
+.card h3{ color:#00e0ff; margin-bottom:8px; transition: transform 0.3s, text-shadow 0.3s; }
+.card:hover h3{ transform: scale(1.1); text-shadow:0 0 15px #00e0ff; }
+
+/* ===== Tabs ===== */
+.tab-content{ display:none; opacity:0; transform: translateY(20px); transition: all 0.5s ease; }
+.tab-content.active{ display:block; opacity:1; transform: translateY(0); }
+
+/* ===== Notification ===== */
+#notification{ position:fixed; top:20px; right:20px; background:rgba(0,224,255,0.9); color:#000; padding:10px 16px; border-radius:6px; font-weight:600; opacity:0; pointer-events:none; transition:opacity 0.3s; z-index:9999; }
+
+/* ===== Animations ===== */
+@keyframes pageFade{ from{opacity:0;} to{opacity:1;} }
+@keyframes fadeUp{ from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+@keyframes fadeDown{ from{opacity:0; transform:translateY(-20px);} to{opacity:1; transform:translateY(0);} }
+@keyframes cardFloat{ from{opacity:0; transform:translateY(40px) scale(0.9);} to{opacity:1; transform:translateY(0) scale(1);} }
+
+/* ===== Responsive ===== */
+@media(max-width:768px){
+  #sidebar{ position:fixed; height:100vh; z-index:999; }
+  #toggle-btn{ display:block; }
+  .main{ padding:20px; }
+  #sidebar.hide{ transform: translateX(-240px); }
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div id="sidebar">
+  <div>
+    <h2>NGO Panel</h2>
+    <a class="tab-link active" data-target="dashboard">Dashboard</a>
+    <a class="tab-link" data-target="meetings">Meetings</a>
+    <a class="tab-link" data-target="recent">Recent Activity</a>
+    <a class="tab-link" data-target="sessions">Sessions</a>
+    <a class="tab-link" data-target="resources">Resources</a>
+    <a class="tab-link" data-target="updates">Updates</a>
+    <a class="tab-link" data-target="other">Other Info</a>
+  </div>
+  <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<button id="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+<!-- Main Content -->
+<div class="main">
+  <h1>Welcome, <span id="user-name"></span>!</h1>
+  <p id="sub-text">Here’s what’s happening in your NGO panel.</p>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="tab-content active">
+    <div class="cards">
+      <div class="card dash-link" data-target="meetings"><h3>Meetings</h3><p>Check upcoming schedules.</p></div>
+      <div class="card dash-link" data-target="recent"><h3>Recent Activity</h3><p>Latest quizzes and events.</p></div>
+      <div class="card dash-link" data-target="sessions"><h3>Sessions</h3><p>Previous and upcoming sessions.</p></div>
+      <div class="card dash-link" data-target="resources"><h3>Resources</h3><p>Guides, docs, and assets.</p></div>
+      <div class="card dash-link" data-target="updates"><h3>Updates</h3><p>See Updates about the Website.</p></div>
+      <div class="card dash-link" data-target="other"><h3>Other Info</h3><p>Extra NGO information.</p></div>
+    </div>
+  </div>
+
+  <!-- Meetings Tab -->
+  <div id="meetings" class="tab-content">
+    <div class="cards">
+      <div class="card"><h3>Meeting #1</h3><p>Date: TBD – <a href="#" class="delayed-link" data-msg="Joining Meeting #1">Coming Soon...</a></p></div>
+    </div>
+  </div>
+
+  <!-- Recent Activity Tab -->
+  <div id="recent" class="tab-content">
+    <div class="cards">
+      <div class="card"><h3>Quiz Competition</h3><p>Date: TBD – <a href="#" class="delayed-link" data-msg="Opening Drive">Coming Soon...</a></p></div>
+    </div>
+  </div>
+
+  <!-- Sessions Tab -->
+  <div id="sessions" class="tab-content">
+    <div class="cards">
+      <div class="card"><h3>Session 1</h3><p>Website Verification<br>Date: 21.09.2025</p></div>
+      <div class="card"><h3>Session 2</h3><p>Cleanliness Session in School Park<br>Date: 22.09.2025</p></div>
+    </div>
+  </div>
+
+  <!-- Resources Tab -->
+  <div id="resources" class="tab-content">
+    <div class="cards">
+      <div class="card"><h3>NGO Members List</h3><p>Click the link below to see the list of all the heads of NGO<br><a href="https://drive.google.com/file/d/1eQceatiNRdWrTrd7FxS0Z8NSfnXps1f7/view?usp=sharing" class="delayed-link" data-msg="Opening Drive">Drive Link</a></p></div>
+    </div>
+  </div>
+
+  <!-- Updates Tab -->
+  <div id="updates" class="tab-content">
+    <div class="cards">
+      <div class="card"><h3>Update 1</h3><p>Website Created<br>Date: 19.09.2025</p></div>
+      <div class="card"><h3>Update 2</h3><p>Floating Notification System<br>Date: 21.09.2025</p></div>
+      <div class="card"><h3>Update 3</h3><p>Improved UI for Mobile<br>Date: 21.09.2025</p></div>
+      <div class="card"><h3>Update 4</h3><p>Sidebar Collapsing System was created<br>Date: 21.09.2025</p></div>
+      <div class="card"><h3>Update 5</h3><p>New Session was added<br>Date: 21.09.2025</p></div>
+      <div class="card"><h3>Update 6</h3><p>New File was added in Resources<br>Date: 21.09.2025</p></div>
+      <div class="card"><h3>Update 7</h3><p>New Session was added<br>Date: 22.09.2025</p></div>
+      <div class="card"><h3>Update 8</h3><p>Updated the Emails of Members in About section of Website<br>Date: 22.09.2025</p></div>
+    </div>
+  </div>
+
+  <!-- Other Info Tab -->
+  <div id="other" class="tab-content">
+    <div class="cards">
+      <div class="card"><h3>NGO Email Info</h3><p>Email: aerokleaners@gmail.com</p></div>
+      <div class="card"><h3>Contact Website Admin</h3><p>Email: yoursjace@gmail.com</p></div>
+      <div class="card"><h3>View website</h3><p><a href="https://aero-kleaners.weebly.com/" class="delayed-link" data-msg="Opening Website">Open Website</a></p></div>
+    </div>
+  </div>
+
+</div>
+
+<div id="notification"></div>
+
+<script>
+// Login guard
+if(sessionStorage.getItem("loggedIn") !== "true"){
+  alert("Please log in first.");
+  window.location.href = "login.html";
+}else{
+  document.getElementById("user-name").textContent = sessionStorage.getItem("name");
+}
+
+// Sidebar toggle
+function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("hide"); }
+
+// Tab switching
+document.querySelectorAll('.tab-link').forEach(link=>{
+  link.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-link').forEach(l=>l.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    link.classList.add('active');
+    document.getElementById(link.dataset.target).classList.add('active');
+  });
+});
+
+// Dashboard cards -> switch tab
+document.querySelectorAll('.dash-link').forEach(card=>{
+  card.addEventListener('click',()=>{
+    const target = card.dataset.target;
+    document.querySelector(`.tab-link[data-target="${target}"]`).click();
+  });
+});
+
+// Notifications
+function notify(msg){
+  const n = document.getElementById('notification');
+  n.textContent = msg;
+  n.style.opacity = 1;
+  setTimeout(()=>{ n.style.opacity=0; }, 2200);
+}
+
+// Delayed links
+document.querySelectorAll('a.delayed-link').forEach(a=>{
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    const msg = this.dataset.msg || "Opening link";
+    notify(msg+"...");
+    setTimeout(()=>{ window.open(this.href,'_blank'); },2000);
+  });
+});
+
+// Logout with delay
+function logout(){
+  notify("Logging out...");
+  setTimeout(()=>{
+    sessionStorage.clear();
+    window.location.href="login.html";
+  },2000);
+}
+</script>
+</body>
+</html>
