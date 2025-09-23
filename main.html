@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NGO Member Panel</title>
+<title>Teacher Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 /* ===== Global ===== */
@@ -93,12 +93,10 @@ body,a,img{user-select:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-d
   <div>
     <h2>NGO Panel</h2>
     <a class="tab-link active" data-target="dashboard">Dashboard</a>
-    <a class="tab-link" data-target="meetings">Meetings</a>
-    <a class="tab-link" data-target="recent">Recent Activity</a>
-    <a class="tab-link" data-target="sessions">Sessions</a>
-    <a class="tab-link" data-target="resources">Resources</a>
+    <a class="tab-link" data-target="meetings">Checkout Meetings</a>
     <a class="tab-link" data-target="updates">Updates</a>
     <a class="tab-link" data-target="other">Other Info</a>
+    <a class="tab-link" data-target="notification-tab">Notifications</a>
   </div>
   <button class="logout-btn" onclick="logout()">Logout</button>
 </div>
@@ -108,17 +106,12 @@ body,a,img{user-select:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-d
 <!-- Main Content -->
 <div class="main">
   <h1>Welcome, <span id="user-name"></span>!</h1>
-  <p id="sub-text">Here’s what’s happening in your NGO panel.</p>
+  <p id="sub-text">Here’s what’s happening in your Teacher's panel.</p>
 
   <!-- Dashboard -->
   <div id="dashboard" class="tab-content active">
     <div class="cards">
-      <div class="card dash-link" data-target="meetings"><h3>Meetings</h3><p>Check upcoming schedules.</p></div>
-      <div class="card dash-link" data-target="recent"><h3>Recent Activity</h3><p>Latest quizzes and events.</p></div>
-      <div class="card dash-link" data-target="sessions"><h3>Sessions</h3><p>Previous and upcoming sessions.</p></div>
-      <div class="card dash-link" data-target="resources"><h3>Resources</h3><p>Guides, docs, and assets.</p></div>
-      <div class="card dash-link" data-target="updates"><h3>Updates</h3><p>See Updates about the Website.</p></div>
-      <div class="card dash-link" data-target="other"><h3>Other Info</h3><p>Extra NGO information.</p></div>
+      <div class="card dash-link" data-target="meetings"><h3>Notifications</h3><p>Check notifications for selected teachers.</p></div>
     </div>
   </div>
 
@@ -129,50 +122,27 @@ body,a,img{user-select:none;-webkit-user-drag:none;-moz-user-drag:none;-o-user-d
     </div>
   </div>
 
-  <!-- Recent Activity Tab -->
-  <div id="recent" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>Quiz Competition</h3><p>Date: TBD – <a href="#" class="delayed-link" data-msg="Opening Drive">Coming Soon...</a></p></div>
-    </div>
-  </div>
-
-  <!-- Sessions Tab -->
-  <div id="sessions" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>Session 1</h3><p>Website Verification<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Session 2</h3><p>Cleanliness Session in School Park<br>Date: 22.09.2025</p></div>
-    </div>
-  </div>
-
-  <!-- Resources Tab -->
-  <div id="resources" class="tab-content">
-    <div class="cards">
-      <div class="card"><h3>NGO Members List</h3><p>Click the link below to see the list of all the heads of NGO<br><a href="https://drive.google.com/file/d/1eQceatiNRdWrTrd7FxS0Z8NSfnXps1f7/view?usp=sharing" class="delayed-link" data-msg="Opening Drive">Drive Link</a></p></div>
-    </div>
-  </div>
-
   <!-- Updates Tab -->
   <div id="updates" class="tab-content">
     <div class="cards">
-      <div class="card"><h3>Update 1</h3><p>Website Created<br>Date: 19.09.2025</p></div>
-      <div class="card"><h3>Update 2</h3><p>Floating Notification System<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Update 3</h3><p>Improved UI for Mobile<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Update 4</h3><p>Sidebar Collapsing System was created<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Update 5</h3><p>New Session was added<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Update 6</h3><p>New File was added in Resources<br>Date: 21.09.2025</p></div>
-      <div class="card"><h3>Update 7</h3><p>New Session was added<br>Date: 22.09.2025</p></div>
-      <div class="card"><h3>Update 8</h3><p>Updated the Emails of Members in About section of Website<br>Date: 22.09.2025</p></div>
+      <div class="card"><h3>Update 1</h3><p>Website Created<br>Date: 23.09.2025</p></div>
+    </div>
+  </div>
+  
+  <!-- Notifications Tab -->
+  <div id="notification-tab" class="tab-content">
+    <div class="cards">
+      <div class="card"><h3>Notification 1</h3><p>...</p></div>
     </div>
   </div>
 
   <!-- Other Info Tab -->
   <div id="other" class="tab-content">
     <div class="cards">
-      <div class="card"><h3>NGO Email Info</h3><p>Email: aerokleaners@gmail.com</p></div>
       <div class="card"><h3>Contact Website Admin</h3><p>Email: yoursjace@gmail.com</p></div>
-      <div class="card"><h3>View website</h3><p><a href="https://aero-kleaners.weebly.com/" class="delayed-link" data-msg="Opening Website">Open Website</a></p></div>
     </div>
   </div>
+
 
 </div>
 
