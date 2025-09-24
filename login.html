@@ -161,8 +161,7 @@ function showNotification(msg){
 function login(){
   const user = document.getElementById('username').value.trim();
   const pass = document.getElementById('password').value.trim();
-  const found = users.find(u => u.username===user && u.password===pass);
-  const err = document.getElementById('error');
+  const err  = document.getElementById('error');
 
   if(!user || !pass){
     err.innerText = "Please enter phone and password";
@@ -171,20 +170,24 @@ function login(){
     return;
   }
 
+  const found = users.find(u => u.username === user && u.password === pass);
+
   showNotification("Logging in...");
 
   setTimeout(()=>{
     if(found){
-      sessionStorage.setItem('loggedIn','true');
-      sessionStorage.setItem('name',found.name);
-      sessionStorage.setItem('isAdmin',ADMIN_USERS.includes(found.name)?'true':'false');
-      window.location.href='main.html';
+      // store simple login info only
+      sessionStorage.setItem('loggedIn', 'true');
+      sessionStorage.setItem('name', found.name);
+
+      // redirect to main.html
+      window.location.href = 'main.html';
     } else {
-      err.innerText="Invalid phone or password";
-      err.style.display='block';
+      err.innerText = "Invalid phone or password";
+      err.style.display = 'block';
       setTimeout(()=> err.style.display='none',3500);
     }
-  },2000);
+  }, 2000);
 }
 </script>
 </body>
